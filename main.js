@@ -1,49 +1,45 @@
-
-// اضافه کردن عدد جدید به کوکی
 async function addNumber(number) {
-  let newNum = await loadNumber() + number; // اگر از فایل number.json میخوای بخونی
+  let current = await loadNumber(); // current is string
+  let newNum = (current || "") + String(number); // concat as text
   appendNumberToCookie(newNum);
 }
 
-// تابع برای اضافه کردن مقدار به کوکی فعلی
 function appendNumberToCookie(newNumber) {
+  let value = String(newNumber);
+  document.cookie = `number=${encodeURIComponent(value)}; path=/; max-age=${60*60*24*30}`;
+  console.log(document.cookie);
+}
+
+function getSeedNumber() {
   let cookies = document.cookie.split("; ");
   let cookieValue = "";
 
-  // خواندن مقدار قبلی
   cookies.forEach(cookie => {
-    let [name, value] = cookie.split("=");
+    let idx = cookie.indexOf('=');
+    if (idx === -1) return;
+    let name = cookie.slice(0, idx).trim();
+    let value = cookie.slice(idx + 1);
     if (name === "number") {
-      cookieValue = value;
+      try {
+        cookieValue = decodeURIComponent(value) || "";
+      } catch {
+        cookieValue = value || "";
+      }
     }
   });
 
-  // اضافه کردن مقدار جدید
-  let updatedValue = cookieValue + newNumber;
-
-  // نوشتن دوباره در کوکی
-  document.cookie = `number=${updatedValue}; path=/;`;
-  console.log( document.cookie);
+  return cookieValue;
 }
 
-// خواندن عدد از فایل JSON
+// helper to return current cookie value (for async addNumber)
 async function loadNumber() {
-  let NUM = 0;
-  try {
-    const response = await fetch('number.json');
-    NUM = await response.json();
-  } catch (err) {
-    console.error("error loading number.json", err);
-  }
-
-  return NUM["number"];
+  return getSeedNumber();
 }
 
-// پاک کردن همه کوکی‌ها
+// clear all cookies
 function clearcoockie() {
   document.cookie.split(";").forEach(cookie => {
     const name = cookie.split("=")[0].trim();
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   });
-  alert("✅ همه‌ی کوکی‌ها حذف شدند!");
 }

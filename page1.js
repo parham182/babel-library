@@ -1,4 +1,5 @@
 // page1.js
+clearcoockie();
 
 // مطمئن شویم DOM کامل لود شده
 document.addEventListener('DOMContentLoaded', function () {
