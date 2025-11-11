@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایشگر صفحات با شماره</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        #pageContent {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap; /* حفظ خطوط */
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .controls button, .controls input {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        input[type="number"] {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <script src="main.js"></script>
+
+    <h2 id="text">نمایشگر صفحات شبیه PDF</h2>
+
+    <div id="pageContent"></div>
+
+    <div class="controls">
+        <button id="prev">صفحه قبل</button>
+        <button id="next">صفحه بعد</button>
+        <span>شماره صفحه:</span>
+        <input type="number" id="pageNumber" min="1" />
+        <button id="go">برو</button>
+    </div>
+
+    <script src="page5.js"></script>
+
+</body>
+</html>

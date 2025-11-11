@@ -1,39 +1,49 @@
-// fs = require('fs');
 
-// function addNumber(number) {
-//     let NUM = number;
-//     let data = {"number": NUM}
-//     fs.writeFile('number.json', JSON.stringify(data), 'utf8', (err) => {
-//         if (err) {
-//             console.error("خطا در نوشتن فایل:", err);
-//         } else {
-//             console.log("عدد با موفقیت در data.json ذخیره شد: " + NUM);
-//         }
-//     });
-// }.
-
-async function addNumber(number) 
-{
-    let newNum = await loadNumber() + number
-    writeNumber(newNum)
-    console.log(newNum)
+// اضافه کردن عدد جدید به کوکی
+async function addNumber(number) {
+  let newNum = await loadNumber() + number; // اگر از فایل number.json میخوای بخونی
+  appendNumberToCookie(newNum);
 }
 
-async function writeNumber(number) {
-    // let data = {"number": number}
-    localStorage.setItem('data', number)
-    let mainNum = await loadNumber() + number;
-    
+// تابع برای اضافه کردن مقدار به کوکی فعلی
+function appendNumberToCookie(newNumber) {
+  let cookies = document.cookie.split("; ");
+  let cookieValue = "";
+
+  // خواندن مقدار قبلی
+  cookies.forEach(cookie => {
+    let [name, value] = cookie.split("=");
+    if (name === "number") {
+      cookieValue = value;
+    }
+  });
+
+  // اضافه کردن مقدار جدید
+  let updatedValue = cookieValue + newNumber;
+
+  // نوشتن دوباره در کوکی
+  document.cookie = `number=${updatedValue}; path=/;`;
+  console.log( document.cookie);
 }
 
+// خواندن عدد از فایل JSON
 async function loadNumber() {
   let NUM = 0;
   try {
     const response = await fetch('number.json');
     NUM = await response.json();
   } catch (err) {
-    console.error("error 2728", err);
+    console.error("error loading number.json", err);
   }
-  
-  return NUM["number"]
+
+  return NUM["number"];
+}
+
+// پاک کردن همه کوکی‌ها
+function clearcoockie() {
+  document.cookie.split(";").forEach(cookie => {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  });
+  alert("✅ همه‌ی کوکی‌ها حذف شدند!");
 }
