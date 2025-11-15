@@ -20,3 +20,11 @@ function generatePage(data) {
     });
     document.getElementById("pageContent").innerHTML = pageStr;
 }
+let flipped = false;
+
+document.body.addEventListener("click", () => {
+    const page = document.getElementById("flipPage");
+
+    page.classList.toggle("flip");
+    flipped = !flipped;
+});
