@@ -6,7 +6,7 @@ async function addNumber(number) {
 
 function appendNumberToCookie(newNumber) {
   let value = String(newNumber);
-  document.cookie = `number=${encodeURIComponent(value)}; path=/; max-age=${60*60*24*30}`;
+  document.cookie = `number=${encodeURIComponent(value)}; path=/; max-age=${60 * 60 * 24 * 30}`;
   console.log(document.cookie);
 }
 
